@@ -26,7 +26,6 @@ func main() {
 		go  entriesofgo.ScanForGo(url, infochan, sem, func() { waiter.Done() })
 
 	}
-
 	waiter.Wait()
 	result := ""
 	totalentries := 0
@@ -38,7 +37,6 @@ func main() {
 	}
 	result += fmt.Printf("Entries: ",totalentries)
 	fmt.Println(result)
-
 
 }
 
