@@ -7,7 +7,6 @@ import (
 )
 
 func TestScanForGo(t *testing.T) {
-
 	urls := []string{
 		"https://golang.org",
 		"https://www.tutorialspoint.com/go/",
