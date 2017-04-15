@@ -1,3 +1,4 @@
+// Package test the work of program
 package entriesofgo
 
 import (
@@ -15,8 +16,6 @@ func TestScanForGo(t *testing.T) {
 	sem := make(chan bool, 3)
 	infoChannel := make(chan ResOfEntries, 3)
 	waiter := &sync.WaitGroup{}
-
-	//
 	for _, url := range urls {
 		sem <- true
 		waiter.Add(1)
