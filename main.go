@@ -1,6 +1,8 @@
 package main
 
 import (
+	"counter/entriesofgo"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,29 +15,27 @@ func main() {
 	log.Println(err, string(bytes))
 	concurrency := 5
 	sem := make(chan bool, concurrency)
-	scanWG := &sync.WaitGroup{}
+	waiter := &sync.WaitGroup{}
 	bytetostring := strings.TrimSpace(string(bytes))
 	urls := strings.Split(bytetostring, "\n")
-	//result_channel := make(chan ,len(urls))
+	infochan := make(chan entriesofgo.ResOfEntries, len(urls))
 	for _, url := range urls {
 		sem <- true
-		scanWG.Add(1)
-		//go numofentries()
+		waiter.Add(1)
+		go entriesofgo.ScanForGo(url, infochan, sem, func() { waiter.Done() })
 
 	}
 
-	scanWG.Wait()
+	waiter.Wait()
 	result := ""
 	totalentries := 0
 
-	//close(result_channel)
-	/* for k :=range result_channel{
-		result +=
-		totalentries +=
+	close(infochan)
+	for k := range infochan {
+		result += k.Msg + "\n"
+		totalentries += k.Cnt
 	}
-	result += fmt.Printf("Entries: ",totalentries)
+	result += fmt.Printf("Entries: ", totalentries)
 	fmt.Println(result)
-	*/
 
 }
-

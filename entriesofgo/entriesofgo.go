@@ -4,9 +4,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
-func getHtmlbyUrl(url string) {
+type ResOfEntries struct {
+	Msg string
+	Cnt int
+}
+
+func getHtmlbyUrl(url string) (htmlData string, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error occurred while getting the content", err)
@@ -19,6 +25,21 @@ func getHtmlbyUrl(url string) {
 		fmt.Println("Error occurred while reading html", err)
 		return
 	}
-	html := string(bytes)
+	htmlData = string(bytes)
+	return
 
+}
+
+func ScanForGo(url string, chanres chan ResOfEntries, sem chan bool, done func()) {
+	if done != nil {
+		<-sem
+		defer done()
+	}
+	datahtml, err := getHtmlbyUrl(url)
+	if err != nil {
+		fmt.Println("Scan failed", err)
+	}
+	cnt := strings.Count(datahtml, "Go")
+	chanMsg := fmt.Sprintf("Count for  : ", url, cnt)
+	chanres <- ResOfEntries{Msg: chanMsg, Cnt: cnt}
 }
