@@ -1,3 +1,5 @@
+/* Package entriesofgo implements functions wich helps get html page from url
+   and scan for Go line */
 package entriesofgo
 
 import (
