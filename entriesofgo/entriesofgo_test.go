@@ -12,6 +12,7 @@ func TestScanForGo(t *testing.T) {
 		"https://www.tutorialspoint.com/go/",
 		"https://tour.golang.org/welcome/1",
 	}
+
 	sem := make(chan bool, 3)
 	infoChannel := make(chan ResOfEntries, 3)
 	waiter := &sync.WaitGroup{}
@@ -22,7 +23,7 @@ func TestScanForGo(t *testing.T) {
 	}
 	waiter.Wait()
 
-	if len(infoChannel) != 2 {
+	if len(infoChannel) != 3 {
 		t.Error("Error occurred")
 	}
 	close(infoChannel)

@@ -28,6 +28,7 @@ func getHtmlbyUrl(url string) (htmlData string, err error) {
 		return
 	}
 	htmlData = string(bytes)
+
 	return
 
 }
